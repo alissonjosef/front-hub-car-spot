@@ -118,7 +118,7 @@ export const appConfig: ApplicationConfig = {
                     },
                     {
                         id: 'theme-ecommply',
-                        name: 'Ecommply',
+                        name: 'HubCarSpot',
                     },
                 ],
             },
