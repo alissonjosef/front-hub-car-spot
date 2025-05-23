@@ -1,0 +1,154 @@
+<ecomm-header title="Notificação (DIMP)" [breadcrumbs]="breadcrumbs" [showActionButton]="true" actionButtonIcon="add"
+    actionButtonLabel="Nova solicitação" showButtonToggle (onToggleButton)="toggleDrawerReg()" actionButtonIcon="notification_add"
+    (onActionButtonClick)="dimpNotificationComponent.toggleDrawer()">
+    <div class="flex min-w-0 flex-auto flex-col">
+        <div class="w-full flex-auto p-6 sm:p-10 flex flex-col gap-10 lg:flex-row">
+            <div class="flex flex-col w-full gap-5">
+
+                @if(searchControl().hasResults) {
+                <div class="bg-card flex flex-col justify-center items-start w-min-4/5 w-full p-6 rounded-2xl"
+                    [class.hidden]="dataSource.data.length === 0">
+                    <div class="flex w-full justify-between">
+                        <span class="text-lg mb-10 font-semibold">Últimas solicitações</span>
+                    </div>
+                    <div class="w-full overflow-x-auto xl:overflow-x-hidden">
+                        <table class="min-w-full overflow-y-visible" mat-table [dataSource]="dataSource">
+                            <ng-container matColumnDef="id">
+
+                                <th mat-header-cell *matHeaderCellDef>
+                                    #
+                                </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{ row.id }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Nome
+                                </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{ row.name }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="institution">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Instituição de pagamento
+                                </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row.institution}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="user">
+                                <th mat-header-cell *matHeaderCellDef class="text-center hidden sm:table-cell">
+                                    Usuário
+                                </th>
+                                <td mat-cell *matCellDef="let row" class="text-center hidden sm:table-cell">
+                                    {{ row.user ?? '--' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="dataRequest">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">
+                                    Data de solicitação
+                                </th>
+                                <td mat-cell *matCellDef="let row" class="whitespace-nowrap text-center">
+                                    {{ row.dataRequest | date: 'dd/MM/yyyy' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="regulatory">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">
+                                    Regulatório
+                                </th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    {{ row.regulatory ?? '--' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="type">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">
+                                    Finalidade
+                                </th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    {{ row.type ?? '--' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">
+                                    Status
+                                </th>
+                                <td mat-cell *matCellDef="let row" class="items-center">
+                                    <div class="flex items-center justify-center" [ngSwitch]="row.status.id">
+
+                                        <div *ngSwitchCase="0" [matTooltip]="getStById(row.status)?.label">
+                                            <mat-icon class="text-amber-600">hourglass_empty</mat-icon>
+
+                                        </div>
+                                        <div *ngSwitchCase="1" [matTooltip]="getStById(row.status)?.label">
+                                            <mat-icon class="text-blue-600 animate-spin">autorenew</mat-icon>
+
+                                        </div>
+                                        <div *ngSwitchCase="2" [matTooltip]="getStById(row.status)?.label">
+                                            <mat-icon class="text-green-600">check</mat-icon>
+
+                                        </div>
+                                        <div *ngSwitchCase="3" [matTooltip]="getStById(row.status)?.label">
+                                            <mat-icon class="text-yellow-600">warning</mat-icon>
+
+                                        </div>
+                                        <div *ngSwitchCase="5" [matTooltip]="getStById(row.status)?.label">
+                                            <mat-icon class="text-orange-600">search_off</mat-icon>
+
+                                        </div>
+                                        <div *ngSwitchCase="4"
+                                            [matTooltip]="row.descricaoErro ? 'Visualizar erros' : 'Lista de erros não disponível'">
+
+                                            @if(row.descricaoErro) {
+                                            <button mat-icon-button (click)="showErrors(row)">
+                                                <mat-icon class="text-red-600">error</mat-icon>
+                                            </button>
+                                            } @else {
+                                            <mat-icon class="text-gray-600">error</mat-icon>
+                                            }
+                                        </div>
+                                        <div *ngSwitchDefault>{{row.stCodigo}}</div>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="parameters">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">
+                                    Parâmetros
+                                </th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    <button mat-icon-button color="primary" disabled>
+                                        <mat-icon>tune</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                            <tr mat-row *matRowDef="let row;columns: columns"></tr>
+                        </table>
+                    </div>
+                    <!--  <mat-paginator [pageIndex]="page.offset" [pageSize]="pageSize()" [pageSizeOptions]="[10,20,50]"
+                        [length]="page.count" (page)="onPageChange($event)">
+                    </mat-paginator> -->
+
+                </div>
+                } @else {
+                <fuse-alert type="primary" class="shadow-sm w-full" appearance="border">
+                    <mat-icon class="icon-size-5" fuseAlertIcon [svgIcon]="'mat_outline:search_off'">
+                    </mat-icon>
+                    {{searchControl().message}}
+                </fuse-alert>
+                }
+            </div>
+        </div>
+    </div>
+
+</ecomm-header>

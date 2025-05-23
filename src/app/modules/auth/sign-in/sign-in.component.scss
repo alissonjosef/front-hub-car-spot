@@ -1,0 +1,43 @@
+.icon-spin {
+    animation: spinLogo 15s ease-in-out 0s infinite normal none;
+
+    &.reverse {
+        animation: spinLogoReverse 15s ease-in-out 0s infinite normal none;
+    }
+}
+
+@keyframes spinLogo {
+    0% {
+        transform:  rotate(0deg);
+    }
+    25% {
+        transform:  rotate(360deg);
+    }
+    50% {
+        transform:  rotate(0);
+    }
+    75% {
+        transform:  rotate(360deg);
+    }
+    100% {
+        transform:  rotate(0);
+    }
+}
+
+@keyframes spinLogoReverse {
+    0% {
+        transform:  rotate(0deg);
+    }
+    25% {
+        transform:  rotate(-360deg);
+    }
+    50% {
+        transform:  rotate(0);
+    }
+    75% {
+        transform:  rotate(-360deg);
+    }
+    100% {
+        transform:  rotate(0);
+    }
+}

@@ -1,0 +1,38 @@
+<div class="absolute inset-0 flex min-w-0 flex-col overflow-hidden z-90">
+    <mat-drawer-container class="h-full flex-auto">
+        <!-- Drawer -->
+        <mat-drawer class="flex w-60 min-w-60 dark:bg-gray-900 md:z-0" [autoFocus]="false" [mode]="drawerMode()"
+            [opened]="drawerOpened()" #matDrawer>
+            <fuse-vertical-navigation [navigation]="menu()" [inner]="true" [mode]="'side'"
+                [name]="'docs-common-components-navigation'" [opened]="true"></fuse-vertical-navigation>
+        </mat-drawer>
+
+        <!-- Drawer content -->
+        <mat-drawer-content class="flex flex-col" fuseScrollReset>
+            <!-- Main -->
+            <div class="flex-auto">
+                <router-outlet></router-outlet>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>
+
+<fuse-drawer #dimpDrawer class="w-screen min-w-screen sm:w-1/3 sm:min-w-1/3" fixed [mode]="'over'" [name]="'dimpDrawer'"
+    [position]="'right'">
+    <div class="bg-card flex w-full flex-col overflow-auto">
+        <div class="flex h-20 min-h-20 flex-row items-center bg-primary px-6 text-white fixed w-full">
+            <div class="ml-3 text-2xl font-semibold tracking-tight">
+                {{dimpDrawerData().title}}
+            </div>
+            <button class="ml-auto" mat-icon-button (click)="dimpDrawer.close()">
+                <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+            </button>
+        </div>
+
+        @if(dimpDrawerData().type === 'CLOSE_DIMP') {
+        <app-close-dimp [data]="dimpDrawerData().data" (onCloseDrawer)="afterCloseDimp()"></app-close-dimp>
+        } @else {
+        <app-file-list [files]="dimpDrawerData().data"></app-file-list>
+        }
+    </div>
+</fuse-drawer>

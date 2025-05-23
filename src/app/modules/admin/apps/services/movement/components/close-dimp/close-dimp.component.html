@@ -1,0 +1,23 @@
+<div class="min-w-full p-5 mt-20 grid grid-flow-row gap-6">
+    <div class="flex flex-col w-full">
+        <div class="flex justify-between items-center pb-4 w-full">
+            <mat-label class="text-primary font-bold">DIMP's</mat-label>
+            <mat-checkbox [indeterminate]="ufsMultipleControls().indeterminate" [disabled]="data().length === 0"
+                [checked]="ufsMultipleControls().allSelected" (change)="changeAll($event)">Todos</mat-checkbox>
+        </div>
+
+        <mat-chip-listbox multiple class="w-full">
+            <div class="grid grid-cols-4 gap-2 w-full">
+                @for (dimp of data(); track $index) {
+                <mat-chip-option (selectionChange)="selectUF($event, dimp)"
+                    [selected]="ufsMultipleControls().checked(dimp)">{{dimp.uf}}</mat-chip-option>
+                }
+            </div>
+        </mat-chip-listbox>
+    </div>
+
+    <div class="w-full flex justify-end items-center mt-20 gap-4">
+        <mat-slide-toggle [(ngModel)]="retificadora"><span class="ml-3">Retificadora</span></mat-slide-toggle>
+        <button mat-raised-button (click)="closeDimp()" [disabled]="dimpsModel().length === 0" color="primary">Fechar DIMP</button>
+    </div>
+</div>

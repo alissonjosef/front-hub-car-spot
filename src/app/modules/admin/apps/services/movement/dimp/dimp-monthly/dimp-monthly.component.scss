@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+
+
+tr.detail-row {
+  height: 0;
+}
+
+tr.row-row {
+  cursor: pointer;
+}
+
+tr.row-row:not(.expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.row-row:not(.expanded-row):active {
+  background: #efefef;
+}
+
+.row-row td {
+  border-bottom-width: 0;
+}
+
+.row-detail-wrapper {
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 0fr;
+  grid-template-columns: 100%;
+  transition: grid-template-rows 225ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.row-detail-wrapper-expanded {
+  grid-template-rows: 1fr;
+}
+
+.row-detail {
+  display: flex;
+  min-height: 0;
+}

@@ -1,0 +1,52 @@
+<ecomm-header title="Editar Responsável / Representante" [breadcrumbs]="breadcrumbs" showGoBackButton
+    (onGoBack)="goBack()">
+    <div class="flex min-w-0 flex-auto flex-col">
+        <div class="w-full flex-auto p-6 sm:p-10 flex flex-col gap-10">
+            <form class="bg-card overflow-hidden rounded p-4 shadow mx-0 md:mx-50" [formGroup]="editForm">
+                <div class="grid grid-cols-12 gap-4 mt-5">
+                    <span class="col-span-12 font-bold">
+                        Dados do Responsável / Representante
+                    </span>
+
+                    <div class="col-span-12 sm:col-span-6 md:col-span-6 w-full mx-auto flex items-center gap-2">
+                        <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                            <mat-label>CPF</mat-label>
+                            <input matInput formControlName="codCpf" mask="000.000.000-00" />
+                        </mat-form-field>
+
+                        <button mat-icon-button >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+
+                    <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                        <mat-label>Nome</mat-label>
+                        <input matInput formControlName="nmResponsavel" />
+                    </mat-form-field>
+
+
+                    <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                        <mat-label>Telefone</mat-label>
+                        <input matInput formControlName="codDddTelefone" mask="0000-0000 || 0 0000-0000 || (00) 0000-0000||(00) 0 0000-0000" />
+                    </mat-form-field>
+
+                   <!--  <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                        <mat-label>Ramal</mat-label>
+                        <input matInput formControlName="codRamal" />
+                    </mat-form-field> -->
+
+                    <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="dsEmail" type="email" />
+                    </mat-form-field>
+                </div>
+                <div class="flex justify-end">
+                    <button class="px-8 gap-2" mat-flat-button [color]="'primary'"  type="button" >
+                        <mat-icon svgIcon="mat_outline:save"></mat-icon>
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ecomm-header>

@@ -1,0 +1,8 @@
+<router-outlet></router-outlet>
+
+
+<fuse-drawer #requestDrawer class="w-screen min-w-screen sm:w-1/3 sm:min-w-1/3" fixed [mode]="'over'"
+    [name]="'requestDrawer'" [position]="'right'">
+
+    <app-dimp-notification-request class="w-full" (onCloseRequest)="toggleDrawer()"></app-dimp-notification-request>
+</fuse-drawer>

@@ -1,0 +1,208 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "ecommply": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss",
+                    "changeDetection": "OnPush",
+                    "displayBlock": true,
+                    "skipTests": true,
+                    "standalone": true
+                }
+            },
+            "root": "",
+            "sourceRoot": "src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:application",
+                    "options": {
+                        "outputPath": "dist/ecommply",
+                        "index": "src/index.html",
+                        "browser": "src/main.ts",
+                        "polyfills": ["zone.js"],
+                        "tsConfig": "tsconfig.app.json",
+                        "inlineStyleLanguage": "scss",
+                        "allowedCommonJsDependencies": [
+                            "apexcharts",
+                            "crypto-js/enc-utf8",
+                            "crypto-js/hmac-sha256",
+                            "crypto-js/enc-base64",
+                            "quill-delta"
+                        ],
+                        "assets": [
+                            {
+                                "glob": "**/*",
+                                "input": "public"
+                            },
+                            {
+                                "glob": "_redirects",
+                                "input": "src",
+                                "output": "/"
+                            },
+                            {
+                                "glob": "**/*",
+                                "input": "src/assets/i18n",
+                                "output": "/assets/i18n"
+                            }
+                        ],
+                        "stylePreprocessorOptions": {
+                            "includePaths": ["src/@fuse/styles"]
+                        },
+                        "styles": [
+                            "src/@fuse/styles/tailwind.scss",
+                            "src/@fuse/styles/themes.scss",
+                            "src/styles/vendors.scss",
+                            "src/@fuse/styles/main.scss",
+                            "src/styles/tailwind.scss",
+                            "src/styles/styles.scss"
+                        ],
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "production": {
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "3mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "75kb",
+                                    "maximumError": "90kb"
+                                }
+                            ],
+                            "outputHashing": "all",
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/env.ts",
+                                    "with": "src/environments/env.prod.ts"
+                                }
+                            ]
+                        },
+                        "homologation": {
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "3mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "75kb",
+                                    "maximumError": "90kb"
+                                }
+                            ],
+                            "outputHashing": "all",
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/env.ts",
+                                    "with": "src/environments/env.hml.ts"
+                                }
+                            ],
+                            "sourceMap": true
+                        },
+                        "lab": {
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "3mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "75kb",
+                                    "maximumError": "90kb"
+                                }
+                            ],
+                            "outputHashing": "all",
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/env.ts",
+                                    "with": "src/environments/env.lab.ts"
+                                }
+                            ],
+                            "sourceMap": true
+                        },
+                        "develop": {
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "3mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "75kb",
+                                    "maximumError": "90kb"
+                                }
+                            ],
+                            "outputHashing": "all",
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/env.ts",
+                                    "with": "src/environments/env.dev.ts"
+                                }
+                            ],
+                            "sourceMap": true
+                        },
+                        "development": {
+                            "optimization": false,
+                            "extractLicenses": false,
+                            "sourceMap": true
+                        }
+                    },
+                    "defaultConfiguration": "production"
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "configurations": {
+                        "production": {
+                            "buildTarget": "ecommply:build:production"
+                        },
+                        "homologation": {
+                            "buildTarget": "ecommply:build:homologation"
+                        },
+                        "lab": {
+                            "buildTarget": "ecommply:build:lab"
+                        },
+                        "develop": {
+                            "buildTarget": "ecommply:build:develop"
+                        },
+                        "development": {
+                            "buildTarget": "ecommply:build:development"
+                        }
+                    },
+                    "defaultConfiguration": "development"
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n"
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "polyfills": ["zone.js", "zone.js/testing"],
+                        "tsConfig": "tsconfig.spec.json",
+                        "inlineStyleLanguage": "scss",
+                        "assets": [
+                            {
+                                "glob": "**/*",
+                                "input": "public"
+                            }
+                        ],
+                        "styles": ["src/styles/styles.scss"],
+                        "scripts": []
+                    }
+                }
+            }
+        }
+    },
+    "cli": {
+      "analytics": "e10bcf15-2d54-4086-b2b8-53d6cb06bb3a"
+    }
+}

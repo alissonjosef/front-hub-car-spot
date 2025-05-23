@@ -1,0 +1,146 @@
+<ecomm-header title="Edição de instituição pagamento" [breadcrumbs]="breadcrumbs"
+    (onGoBack)="goBack()" >
+    <div class="flex min-w-0 flex-auto flex-col">
+        <div class="w-full flex-auto p-6 sm:p-10 flex flex-col gap-10">
+            <div class="overflow-hidden p-4 mx-0 md:mx-50 xl:mx-90">
+                <ng-container *ngTemplateOutlet="defaultForm"></ng-container>
+                <div class="flex justify-end">
+                    <button class="px-8 gap-2" mat-flat-button [color]="'primary'" type="button"
+                        >
+                        <mat-icon svgIcon="mat_outline:save"></mat-icon>
+                        Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ecomm-header>
+
+
+<ng-template #defaultForm>
+    <form class="flex flex-col gap-5 mb-5" [formGroup]="form">
+        <div class="rounded bg-card grid grid-cols-12 shadow gap-4 p-5">
+            <span class="col-span-12 font-bold">
+                Dados básicos
+            </span>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                <mat-label>CNPJ</mat-label>
+                <input matInput formControlName="codCnpj" mask="00.000.000/0000-00" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                <mat-label>Razão social</mat-label>
+                <input matInput formControlName="nmRazaoSocial" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                <mat-label>Nome fantasia</mat-label>
+                <input matInput formControlName="nmFantasia" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                <mat-label>Telefone</mat-label>
+                <input matInput formControlName="codDddTelefone" mask="(00) 0000-0000||(00) 0 0000-0000" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                <mat-label>Insc. Estadual</mat-label>
+                <input matInput formControlName="codIe" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                <mat-label>Cód. Municipal</mat-label>
+                <input matInput formControlName="codIm" />
+            </mat-form-field>
+        </div>
+
+        <div class="rounded grid grid-cols-12 gap-4 bg-card shadow p-5">
+            <span class="col-span-12 font-bold">
+                Dados do Endereço
+            </span>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 md:col-span-4 w-full mx-auto">
+                <mat-label>CEP</mat-label>
+                <input matInput formControlName="codCep" mask="00.000-000" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 md:col-span-4 w-full mx-auto">
+                <mat-label>Endereço</mat-label>
+                <input matInput formControlName="nmEndereco" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 md:col-span-4 w-full mx-auto">
+                <mat-label>Número</mat-label>
+                <input matInput formControlName="nmNumero" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 md:col-span-4 w-full mx-auto">
+                <mat-label>Complemento</mat-label>
+                <input matInput formControlName="nmComplemento" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 md:col-span-4 w-full mx-auto">
+                <mat-label>Código IBGE</mat-label>
+                <input matInput formControlName="codIbge" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 md:col-span-4 w-full mx-auto">
+                <mat-label>Bairro</mat-label>
+                <input matInput formControlName="nmBairro" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 md:col-span-4 w-full mx-auto">
+                <mat-label>Cidade</mat-label>
+                <input matInput formControlName="nmCidade" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 md:col-span-4 w-full mx-auto">
+                <mat-label>UF</mat-label>
+                <input matInput formControlName="nmUf" mask="SS" />
+            </mat-form-field>
+        </div>
+
+        <div class="rounded grid grid-cols-12 gap-4 bg-card shadow p-5">
+
+            <span class="col-span-12 font-bold">
+                Dados de contato
+            </span>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 md:col-span-6 w-full mx-auto">
+                <mat-label>Nome Responsável</mat-label>
+                <input matInput formControlName="nmResponsavel" />
+            </mat-form-field>
+
+            <div class="col-span-12 sm:col-span-6 md:col-span-6 w-full mx-auto flex items-center gap-2">
+                <mat-form-field class="w-full">
+                    <mat-label>CPF Responsável</mat-label>
+                    <input matInput formControlName="codCpfResponsavel" mask="000.000.000-00" />
+                </mat-form-field>
+
+                <button mat-icon-button >
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </div>
+
+            <div class="col-span-12 w-full mx-auto">
+                <mat-form-field class="w-full sm:w-auto sm:min-w-56">
+                    <mat-label>Telefone ramal</mat-label>
+                    <input matInput formControlName="codTelefoneRamal"
+                        mask="0000||0000-0000||0 0000-0000||(00) 0000-0000||(00) 0 0000-0000" />
+                </mat-form-field>
+            </div>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 md:col-span-6 w-full mx-auto">
+                <mat-label>Nome Representante</mat-label>
+                <input matInput formControlName="nmRepresentante" />
+            </mat-form-field>
+
+            <mat-form-field class="col-span-12 sm:col-span-6 md:col-span-6 w-full mx-auto">
+                <mat-label>E-mail Representante</mat-label>
+                <input matInput formControlName="dsEmailRepresentante" type="email" />
+            </mat-form-field>
+        </div>
+    </form>
+
+</ng-template>

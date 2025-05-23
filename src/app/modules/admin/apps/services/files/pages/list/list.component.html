@@ -1,0 +1,237 @@
+<div class="absolute inset-0 flex min-w-0 flex-col overflow-hidden z-90 min-h-screen">
+  <mat-drawer-container class="h-full flex-auto">
+    <!-- Drawer -->
+    <mat-drawer class="flex w-60 min-w-72 dark:bg-gray-900 lg:min-w-100 lg:z-0" [autoFocus]="false"
+      [mode]="drawerMode()" [opened]="drawerOpened()" #matDrawer>
+      <form class="flex flex-col w-full gap-5 p-5" [formGroup]="filterForm">
+        <!-- Exibe o regulatório se houver mais de um -->
+        <ng-container *ngIf="types()?.length > 1">
+          <div>
+            <strong class="mb-2">Regulatório</strong>
+            <mat-radio-group formControlName="regulatory" class="flex flex-col" (change)="getList()">
+              <ng-container *ngFor="let op of (types$ | async); trackBy: index">
+                <mat-radio-button [value]="op.key">{{ op.label }}</mat-radio-button>
+              </ng-container>
+            </mat-radio-group>
+          </div>
+        </ng-container>
+
+        <!-- Seletor de tipos de arquivo -->
+        <div class="flex flex-col mt-5 sm:mt-0">
+          <strong class="mb-2">Tipo arquivo</strong>
+          @for(type of fileTypes(); track $index) {
+          <mat-checkbox (change)="changeFileType(type)" [checked]="type.selected">{{type.typeLabel}}</mat-checkbox>
+          }
+        </div>
+      </form>
+    </mat-drawer>
+
+    <!-- Drawer content -->
+    <mat-drawer-content class="flex flex-col" fuseScrollReset>
+      <!-- Main -->
+      <ecomm-header title="Arquivos enviados" [breadcrumbs]="breadcrumbs" showButtonToggle iconToggle="filter_alt"
+        (onToggleButton)="toggleDrawer()">
+        <div class="flex min-w-0 flex-auto flex-col">
+          <div class="w-full flex-auto p-6 sm:p-10 flex flex-col gap-10 lg:flex-row">
+            <div class="flex flex-col w-full gap-5">
+
+              <form class="flex flex-col w-full gap-4 lg:flex-row lg:gap-5 lg:items-center" [formGroup]="filterForm">
+                <div class="w-full">
+                  <mat-form-field class="w-full md:w-1/2">
+                    <mat-label>Arquivo</mat-label>
+                    <mat-icon matPrefix class="icon-size-5" [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
+                    <input placeholder="Procurar por arquivo" formControlName="fileName" matInput #query />
+                    <button matSuffix (click)="filterForm.controls.fileName.setValue('')">
+                      <mat-icon>clear</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+              </form>
+
+              @if(searchControl().afterSearch !== false){
+
+              <div class="w-full flex justify-end gap-4">
+                <div class="rounded-full bg-gray-200 p-1 px-4 text-sm font-semibold cursor-pointer hover:bg-gray-100"
+                  [matMenuTriggerFor]="menuPeriod">
+                  {{ intervalFilter().label }}
+                </div>
+                <div class="rounded-full bg-gray-200 p-1 px-4 text-sm font-semibold cursor-pointer hover:bg-gray-100"
+                  [matMenuTriggerFor]="menuStatus">
+                  {{ statusFilter().label }}
+                </div>
+                <mat-menu #menuPeriod="matMenu">
+                  @for(p of intervalList; track $index) {
+                  <button mat-menu-item (click)="choosePeriod(p)">{{p.label}}</button>
+                  }
+                </mat-menu>
+                <mat-menu #menuStatus="matMenu">
+                  @for(p of statusList; track $index) {
+                  <button mat-menu-item (click)="chooseStatus(p)">{{p.label}}</button>
+                  }
+                </mat-menu>
+              </div>
+              @if(searchControl().hasResults) {
+
+              <!-- Área de listagem -->
+              <div class="bg-card flex flex-col justify-start items-end w-min-4/5 w-full p-6 rounded-2xl">
+                <div class="w-full overflow-x-auto">
+                  <!-- Tabela de resultados -->
+                  <table class="min-w-full overflow-y-visible" mat-table [dataSource]="dataSource" matSort
+                    [matSortActive]="sortState().active" [matSortDirection]="sortState().direction"
+                    (matSortChange)="onSortChange($event)">
+                    <!-- Coluna: Nome do arquivo -->
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Arquivo</th>
+                      <td mat-cell *matCellDef="let row">
+                        <span>
+                          {{ row.nome }}
+                        </span>
+                      </td>
+                    </ng-container>
+
+                    <!-- Coluna: Tipo -->
+                    <ng-container matColumnDef="type">
+                      <th mat-header-cell *matHeaderCellDef class="text-center">Tipo</th>
+                      <td mat-cell *matCellDef="let row" class="text-center">
+                        <ng-container class="flex items-center justify-center" [ngSwitch]="row.tipo">
+                          <span *ngSwitchCase="1">
+                            Estabelecimentos
+                          </span>
+
+                          <span *ngSwitchCase="2">
+                            Transações
+                          </span>
+
+                          <span *ngSwitchCase="3">
+                            Cancelamentos
+                          </span>
+
+                          <span *ngSwitchCase="4">
+                            Conta conjunta
+                          </span>
+
+                          <span *ngSwitchCase="5">
+                            Marketplace
+                          </span>
+
+                        </ng-container>
+                      </td>
+                    </ng-container>
+
+                    <!-- Coluna: Tamanho -->
+                    <ng-container matColumnDef="size">
+                      <th mat-header-cell *matHeaderCellDef class="text-center">Tamanho</th>
+                      <td mat-cell *matCellDef="let row" class="text-center">
+                        {{ row.tamanhoBytes }}
+                      </td>
+                    </ng-container>
+
+                    <!-- Coluna: Data de Processamento -->
+                    <ng-container matColumnDef="auditCreatedAt">
+                      <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="auditCreatedAt">
+                        Data processamento
+                      </th>
+                      <td mat-cell *matCellDef="let row" class="text-center">
+                        {{ row.auditCreatedAt | date: 'dd/MM/yyyy HH:mm' }}
+                      </td>
+                    </ng-container>
+
+                    <!-- Coluna: Total de Linhas -->
+                    <ng-container matColumnDef="totalLines">
+                      <th mat-header-cell *matHeaderCellDef class="text-center">Linhas totais</th>
+                      <td mat-cell *matCellDef="let row" class="text-center">
+                        {{ row.totalLinhas }}
+                      </td>
+                    </ng-container>
+
+                    <!-- Coluna: Linhas Processadas -->
+                    <ng-container matColumnDef="totalProcessedLines">
+                      <th mat-header-cell *matHeaderCellDef class="text-center">
+                        Linhas processadas
+                      </th>
+                      <td mat-cell *matCellDef="let row" class="text-center">
+                        {{ row.totalLinhasProcessadas }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="pending">
+                      <th mat-header-cell *matHeaderCellDef class="text-center">
+                        Linhas com erro
+                      </th>
+                      <td mat-cell *matCellDef="let row" class="text-center">
+                        @if(row.totalLinhasDivergencia > 0) {
+                        <div matTooltip="Baixar log de erros" (click)="downloadErrors(row)"
+                          [ngClass]="false ? 'bg-red-100  hover:cursor-default':'bg-red-600 hover:bg-red-500 hover:cursor-pointer'"
+                          class=" w-fit place-self-center text-white py-1 px-2 rounded-lg flex gap-1 justify-center items-center ">
+                          <mat-icon class="text-white icon-size-5">download</mat-icon>
+                          <span>
+                            {{ row.totalLinhasDivergencia }}
+                          </span>
+                        </div>
+                        } @else {
+                        <span>0</span>
+                        }
+                      </td>
+                    </ng-container>
+
+                    <!-- Coluna: Status -->
+                    <ng-container matColumnDef="status">
+                      <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
+                      <td mat-cell *matCellDef="let row" class="text-center" [ngClass]="row.status">
+                        <div class="flex items-center justify-center" [ngSwitch]="row.status">
+                          <div *ngSwitchCase="3" matTooltip="Processado">
+                            <mat-icon class="text-green-600">check</mat-icon>
+                          </div>
+
+                          <div *ngSwitchCase="2" matTooltip="Processando">
+                            <mat-icon class="text-blue-600 animate-spin">autorenew</mat-icon>
+                          </div>
+
+                          <div *ngSwitchCase="1" matTooltip="Pendente">
+                            <mat-icon class="text-amber-600">hourglass_empty</mat-icon>
+                          </div>
+
+                          <div *ngSwitchCase="4" matTooltip="Erro">
+                            <mat-icon class="text-red-600">error</mat-icon>
+                          </div>
+                        </div>
+                      </td>
+                    </ng-container>
+
+                    <!-- Coluna: Transações -->
+                    <ng-container matColumnDef="transactions">
+                      <th mat-header-cell *matHeaderCellDef class="text-center">Registros</th>
+                      <td mat-cell *matCellDef="let row" class="text-center">
+                        <button mat-icon-button color="primary" (click)="clickRecords(row)" matTooltip="Registros"
+                          [disabled]="disabledNavigationButton(row)">
+                          <mat-icon>receipt_long</mat-icon>
+                        </button>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columns"></tr>
+                  </table>
+                  <mat-paginator [pageIndex]="pageIndex()" [pageSize]="pageSize()"
+                    [pageSizeOptions]="[25, 50, 100, 150]" [length]="totalItems()" (page)="onPageChange($event)">
+                  </mat-paginator>
+                  <!-- Template exibido quando não há resultados -->
+                </div>
+              </div>
+              } @else {
+              @if(errorTypes[eType()]; as error) {
+              <fuse-alert [type]="error.alertType" class="shadow-sm w-full" appearance="border">
+                <mat-icon class="icon-size-5" fuseAlertIcon [svgIcon]="error.icon">
+                </mat-icon>
+                {{error.message}}
+              </fuse-alert>
+              }
+              }
+              }
+            </div>
+          </div>
+        </div>
+      </ecomm-header>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

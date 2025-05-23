@@ -1,0 +1,8 @@
+<div class="min-w-full p-5 mt-20">
+    <div class="flex flex-col divide-y border-b font-medium" *ngFor="let file of files()">
+        <div class="flex items-center justify-between py-3">
+            <a routerLink="/apps/services/files" [queryParams]="{ f: file.nome }" matTooltip="Ir para tela de arquivos"
+                class="text-secondary hover:underline">{{file.nome}}</a>
+        </div>
+    </div>
+</div>

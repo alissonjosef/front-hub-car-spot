@@ -1,0 +1,104 @@
+@import './components/badge';
+
+/* ----------------------------------------------------------------------------------------------------- */
+/*  @ Import/write your custom styles here.
+/*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
+/* ----------------------------------------------------------------------------------------------------- */
+.mat-mdc-form-field.mat-form-field-appearance-fill
+    .mat-mdc-text-field-wrapper
+    .mat-mdc-form-field-flex
+    .mat-mdc-form-field-infix
+    .mat-mdc-floating-label {
+    width: fit-content !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+.mat-mdc-raised-button .mat-icon,
+.mat-mdc-unelevated-button .mat-icon,
+.mat-mdc-fab .mat-icon,
+.mat-mdc-mini-fab .mat-icon {
+    &.text-white {
+        color: #ffffff !important;
+    }
+}
+
+.mat-expansion-panel:not([class*='mat-elevation-z']) {
+    box-shadow: none !important;
+}
+
+.mat-accordion .mat-expansion-panel {
+    box-shadow: none !important;
+}
+
+.mat-expansion-panel-body {
+    padding: 0 !important;
+}
+
+.mat-accordion .mat-expansion-panel.mat-expanded {
+    box-shadow: none !important;
+
+    &:hover {
+        box-shadow: none !important;
+    }
+}
+
+.mat-mdc-slider .mdc-slider__input {
+    padding: 0px 16px !important;
+    width: calc(100% + -18px) !important;
+    left: -4px !important;
+}
+
+/* .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    &:is(.dark *) {
+        color: red !important;
+    }
+} */
+
+.mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-text-field-wrapper:is(.dark *) {
+    background-color: #464646 !important;
+}
+
+.fuse-horizontal-navigation-menu-item
+    fuse-horizontal-navigation-basic-item
+    .fuse-horizontal-navigation-item-active
+    .fuse-horizontal-navigation-item-title,
+.fuse-horizontal-navigation-menu-item
+    fuse-horizontal-navigation-basic-item
+    .fuse-horizontal-navigation-item-active-forced
+    .fuse-horizontal-navigation-item-title {
+    &:is(.dark *) {
+        color: #3d4c5a !important;
+    }
+}
+
+// .max-w-screen-xl > 1440px
+//     .max-w-screen-xl {
+//         max-width: 1440px;
+//     }
+
+.max-w-screen-2xl {
+    max-width: 1536px;
+}
+
+.mat-mdc-snack-bar-container {
+    &.snackbar-error {
+        --mdc-snackbar-container-color: rgb(199, 30, 30);
+        --mdc-snackbar-supporting-text-color: white;
+    }
+
+    &.snackbar-success {
+        --mdc-snackbar-container-color: rgb(10, 132, 10);
+        --mdc-snackbar-supporting-text-color: white;
+    }
+}

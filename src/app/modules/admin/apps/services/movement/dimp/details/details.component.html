@@ -1,0 +1,194 @@
+<ecomm-header title="Detalhes do movimento" [description]="compMovement()" [breadcrumbs]="breadcrumbs" showButtonToggle
+    (onToggleButton)="toggleDrawerReg()">
+    <div class="flex min-w-0 flex-auto flex-col">
+        <ng-container *ngIf="searchControl().afterSearch">
+            <ng-container *ngIf="searchControl().hasResults; else noResults">
+                <div class="w-full flex-auto p-4 sm:p-10 flex justify-end flex-col gap-10 xl:px-10">
+
+                    <div class="w-full flex flex-col justify-between gap-5 lg:flex-row">
+                        <div class="flex flex-col gap-5 lg:flex-row">
+                            <div class="flex flex-col justify-end w-fit gap-1">
+                                <span class="text-sm font-bold">Status:</span>
+                                @if(data().statusNavigation?.actions?.length === 0) {
+                                <div class="flex gap-2 w-fit place-self-center rounded-3xl p-2 px-5 text-white opacity-70 justify-center items-center"
+                                    [ngClass]="data().statusNavigation?.classes">
+                                    <mat-icon class="text-white">{{data().statusNavigation?.icon}}</mat-icon>
+                                    <span>{{data().statusNavigation?.buttonLabel}}</span>
+                                </div>
+                                } @else {
+                                <button mat-raised-button class="flex-row items-center gap-2"
+                                    [matMenuTriggerFor]="statusMenu" [ngClass]="data().statusNavigation?.classes">
+                                    <mat-icon>{{ data().statusNavigation?.icon || 'more_horiz'
+                                        }}</mat-icon>
+                                    <span>
+                                        {{ data().statusNavigation?.buttonLabel || 'Selecionar' }}
+                                    </span>
+                                </button>
+                                <mat-menu #statusMenu="matMenu">
+                                    @for (item of data().statusNavigation?.actions; track item) {
+                                    @if(getStatusNavigationDTOById(item); as action) {
+                                    <button mat-menu-item (click)="updateStatus(data(), action)">
+                                        <mat-icon>{{ action.icon }}</mat-icon>
+                                        <span>{{ action.actionLabel }}</span>
+                                    </button>
+                                    }
+                                    }
+                                </mat-menu>
+                                }
+                            </div>
+
+                            <div class="flex flex-col w-fit gap-1">
+                                <span class="text-sm font-bold">Últ. DIMP: <span
+                                        class="badge processing">RETIFICADORA</span></span>
+                                <button mat-raised-button (click)="downloadDimp()" matTooltip="Baixar arquivo DIMP"
+                                    class="flex gap-1 bg-white" [disabled]="!data().arquivoDimpId">
+                                    <mat-icon color="primary">download</mat-icon>
+                                    Download
+                                </button>
+                            </div>
+                        </div>
+
+                        <button mat-stroked-button (click)="openFilesDrawer()" matTooltip="Ver lista de arquivos"
+                            class="flex gap-1 place-self-end">
+                            <mat-icon color="primary">file_present</mat-icon>
+                            Ver arquivos
+                        </button>
+                    </div>
+                    <div class="flex flex-col w-full gap-5">
+                        <div class="flex flex-col gap-6 md:flex-row">
+                            <div class="flex-col flex gap-6 w-full md:w-160 xl:w-min-120">
+                                <ng-container *ngTemplateOutlet="pendingTemplate"></ng-container>
+                                <ng-container *ngTemplateOutlet="historyTemplate"></ng-container>
+                            </div>
+
+                            <fuse-masonry class="w-full" [items]="currentMovementConfig" [columns]="columnsDetail()"
+                                [columnsTemplate]="columnsTemplate">
+                            </fuse-masonry>
+
+                            <ng-template #columnsTemplate let-columns>
+                                <ng-container *ngFor="let column of columns">
+                                    <div class="flex-1 rounded space-y-8 md:mx-5">
+                                        <ng-container *ngFor="let item of column.items">
+                                            <app-card-detail [dataSource]="data()" [config]="item"></app-card-detail>
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </ng-template>
+                            <!-- <mat-tab-group [selectedIndex]="0" class="w-full" mat-stretch-tabs="false"
+                                mat-align-tabs="start">
+                                <mat-tab label="Movimento">
+
+                                    
+                                </mat-tab>
+                                <mat-tab label="Histórico de geração">
+                                    <app-dimp-details-history [data]="data()"
+                                        class="w-full h-full"></app-dimp-details-history>
+                                </mat-tab>
+                            </mat-tab-group> -->
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-template #noResults>
+                <fuse-alert type="primary" class="shadow-sm w-full" appearance="border">
+                    <mat-icon class="icon-size-5" fuseAlertIcon [svgIcon]="'mat_outline:search_off'">
+                    </mat-icon>
+                    Nenhum resultado encontrado para a busca realizada.
+                </fuse-alert>
+            </ng-template>
+        </ng-container>
+    </div>
+</ecomm-header>
+
+
+<ng-template #pendingTemplate>
+    @if(data().pendencia) {
+    <div
+        class="bg-red-600 dark:bg-red-900 text-white flex-col overflow-hidden rounded-2xl p-6 shadow-md grid grid-cols-2 h-fit">
+        <div class="flex items-start justify-between mb-4 col-span-2">
+            <div class="text-lg font-semibold tracking-tight">Pendências
+            </div>
+            <mat-icon class="w-6 h-6 text-white">warning</mat-icon>
+        </div>
+
+        <span class="col-span-2 mb-10 mt-5 text-sm">⚠️ Existem pendências a
+            serem
+            resolvidas:</span>
+
+        @if(data().somaEstabelecimentoPendencia > 0) {
+        <span>Estabelecimentos:</span>
+        <span class="place-self-end">{{data().somaEstabelecimentoPendencia}}</span>
+        }
+
+        @if(data().somaTransacaoPendencia > 0) {
+        <span>Transações ({{data().somaTransacaoPendencia}}):</span>
+        <span class="place-self-end">{{data().somaValorTransacaoPendencia |
+            currency:'BRL':'symbol':'1.2-2':'pt'}}</span>
+        }
+
+        @if(data().sumCancelamentoPendencia > 0) {
+        <span>Cancelamentos
+            ({{data().sumCancelamentoPendencia}}):</span>
+        <span class="place-self-end">{{data().sumValorCancelamentoPendencia |
+            currency:'BRL':'symbol':'1.2-2':'pt'}}</span>
+        }
+
+        @if(data().sumExtemporaneoPendencia > 0) {
+        <span>Extemporâneas
+            ({{data().sumExtemporaneoPendencia}}):</span>
+        <span class="place-self-end">{{data().sumValorExtemporaneoPendencia |
+            currency:'BRL':'symbol':'1.2-2':'pt'}}</span>
+        }
+
+        <button mat-raised-button class="flex gap-1 bg-white col-span-2 text-black mt-10"
+            (click)="downloadMovimentoErros()">
+            <mat-icon>download</mat-icon>
+            <span>Download do log de erros</span>
+        </button>
+    </div>
+    }
+</ng-template>
+
+<ng-template #historyTemplate>
+    @if(historyHasError()) {
+    <fuse-alert type="warning" class="shadow-sm w-full" appearance="border">
+        <mat-icon class="icon-size-5" fuseAlertIcon [svgIcon]="'mat_outline:search_off'">
+        </mat-icon>
+        Houve um erro ao recuperar o histórico de mudança de status
+    </fuse-alert>
+    } @else {
+    <div class="bg-gray-600 text-white flex flex-col overflow-hidden rounded-2xl p-6 shadow-md w-full">
+        <div class="flex items-start justify-between mb-4">
+            <div class="text-lg font-semibold tracking-tight">Histórico de
+                status</div>
+            <mat-icon class="w-6 h-6 text-white">timeline</mat-icon>
+        </div>
+
+        @if(statusNavigationHistory().length > 0) {
+        <ol>
+            @for (historicItem of statusNavigationHistory(); track $index) {
+            <app-historic-item (onUpdate)="updateStatus($event)" (onDownloadDIMP)="downloadDimp(historicItem)"
+                [isFirst]="$index === 0" [item]="historicItem"></app-historic-item>
+            }
+            <li class="relative flex py-7">
+                <div class="relative flex items-center">
+                    <div class="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-400">
+                        <mat-icon class="text-white icon-size-5" svgIcon="heroicons_solid:play"></mat-icon>
+                    </div>
+                    <span>Início</span>
+                </div>
+            </li>
+        </ol>
+        } @else {
+        <fuse-alert type="basic" class="shadow-sm w-full" appearance="soft">
+            <mat-icon class="icon-size-5" fuseAlertIcon [svgIcon]="'mat_outline:search_off'">
+            </mat-icon>
+            Não existem registros de histórico
+        </fuse-alert>
+        }
+    </div>
+    }
+</ng-template>
+
+<!-- <app-dimp-details-history class="w-full h-full"></app-dimp-details-history> -->

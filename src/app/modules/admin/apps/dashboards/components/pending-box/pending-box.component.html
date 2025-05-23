@@ -1,0 +1,80 @@
+<div class="bg-red-100 relative flex flex-auto flex-col overflow-hidden h-auto rounded-2xl p-6 pb-5 shadow">
+    <!-- <div class="absolute bottom-0 right-0 -m-6 h-24 w-24">
+                        <mat-icon class="text-red-500 opacity-25 icon-size-24 dark:text-red-400"
+                            [svgIcon]="'heroicons_outline:exclamation-circle'"></mat-icon>
+                    </div> -->
+    <div class="flex flex-col w-full">
+        <div class="flex justify-between">
+            <div class="truncate text-2xl font-bold tracking-tight">
+                Pendências
+            </div>
+            <mat-icon class="text-red-600" svgIcon="heroicons_solid:exclamation-triangle"></mat-icon>
+        </div>
+        <div class="font-medium text-red-600">
+            Quantidade por tipo de arquivo
+        </div>
+    </div>
+    <div class="mt-10 flex flex-row flex-wrap gap-3 pb-10">
+        <div class="w-full flex flex-col gap-1">
+            <span class="truncate text-sm font-medium leading-6 tracking-tight">
+                Estabelecimentos
+            </span>
+            <div class="w-full flex gap-4 items-center">
+
+                <div class="progress relative h-7 w-full bg-gray-300 shadow-md rounded-lg" matTooltip="50%"
+                    matTooltipPosition="above" [matTooltipPositionAtOrigin]="true">
+                    <div class="absolute bg-gradient-to-r from-red-700 via-red-600 to-red-400 left-0 top-0 h-7 rounded-md"
+                        [style.width]="'50%'">
+                    </div>
+                </div>
+                <span class="font-semibold">50</span>
+            </div>
+        </div>
+        <div class="w-full flex flex-col gap-1">
+            <span class="truncate text-sm font-medium leading-6 tracking-tight">
+                Transações
+            </span>
+            <div class="w-full flex gap-4 items-center">
+
+                <div class="progress relative h-7 w-full bg-gray-300 shadow-md rounded-lg" matTooltip="50%"
+                    matTooltipPosition="above" [matTooltipPositionAtOrigin]="true">
+                    <div class="absolute bg-gradient-to-r from-pink-700 via-pink-600 to-pink-400 left-0 top-0 h-7 rounded-md"
+                        [style.width]="'50%'">
+                    </div>
+                </div>
+                <span class="font-semibold">50</span>
+            </div>
+        </div>
+        <div class="w-full flex flex-col gap-1">
+            <span class="truncate text-sm font-medium leading-6 tracking-tight">
+                Cancelamentos
+            </span>
+            <div class="w-full flex gap-4 items-center">
+
+                <div class="progress relative h-7 w-full bg-gray-300 shadow-md rounded-lg" matTooltip="50%"
+                    matTooltipPosition="above" [matTooltipPositionAtOrigin]="true">
+                    <div class="absolute bg-gradient-to-r from-blue-700 via-blue-600 to-blue-400 left-0 top-0 h-7 rounded-md"
+                        [style.width]="'50%'">
+                    </div>
+                </div>
+                <span class="font-semibold">50</span>
+            </div>
+        </div>
+        <div class="w-full flex flex-col gap-1">
+            <span class="truncate text-sm font-medium leading-6 tracking-tight">
+                Conta conjunta
+            </span>
+            <div class="w-full flex gap-4 items-center">
+
+                <div class="progress relative h-7 w-full bg-gray-300 shadow-md rounded-lg" matTooltip="50%"
+                    matTooltipPosition="above" [matTooltipPositionAtOrigin]="true">
+                    <div class="absolute bg-gradient-to-r from-green-700 via-green-600 to-green-400 left-0 top-0 h-7 rounded-md"
+                        [style.width]="'50%'">
+                    </div>
+                </div>
+                <span class="font-semibold">50</span>
+            </div>
+        </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="clickPendingFiles()">Ver pendências</button>
+</div>

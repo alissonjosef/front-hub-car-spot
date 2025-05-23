@@ -1,0 +1,50 @@
+<div class="flex flex-col w-full px-6 items-start mt-10 gap-2">
+    <div class="flex justify-between items-center pb-4 w-full">
+        <mat-label class="text-primary font-bold">UF's</mat-label>
+        <mat-checkbox [indeterminate]="ufsMultipleControls().indeterminate"
+            [disabled]="ufs().length === 0"
+            [checked]="ufsMultipleControls().allSelected" (change)="changeAll($event)">Todos</mat-checkbox>
+    </div>
+
+    @if(ufs().length > 0) {
+    <mat-chip-listbox multiple class="w-full">
+        <div class="grid grid-cols-4 gap-2 w-full">
+            @for (uf of ufs(); track $index) {
+            <mat-chip-option (selectionChange)="selectUF($event, uf)"
+                [selected]="ufsMultipleControls().checked(uf)">{{uf}}</mat-chip-option>
+            }
+        </div>
+    </mat-chip-listbox>
+    } <!-- @else {
+    <mat-spinner class="self-center w-15 h-15"></mat-spinner>
+    } -->
+
+
+    @if(ufsModel().length > 0) {
+    <div class="flex justify-between items-center pb-4 w-full mt-10">
+        <mat-label class="text-primary font-bold">Datas</mat-label>
+        <mat-checkbox [indeterminate]="datesMultipleControls().indeterminate"
+            [checked]="datesMultipleControls().allSelected" [disabled]="dates().length === 0"
+            (change)="changeAllDates($event)">Todas</mat-checkbox>
+    </div>
+    @if(dates().length > 0) {
+    <mat-chip-listbox multiple class="w-full">
+        <div class="grid grid-cols-2 gap-2 w-full">
+            @for (date of dates(); track $index) {
+            <mat-chip-option (selectionChange)="selectDate($event, date)"
+                [selected]="datesMultipleControls().checked(date)">{{ date | date: 'dd/MM/yyyy' }}</mat-chip-option>
+            }
+        </div>
+    </mat-chip-listbox>
+    } @else {
+    <mat-spinner class="self-center w-15 h-15"></mat-spinner>
+    }
+    } @else {
+    <fuse-alert type="primary" class="shadow-sm mt-10" appearance="border">
+        <mat-icon class="icon-size-5" fuseAlertIcon [svgIcon]="'mat_outline:search_off'">
+        </mat-icon>
+        Selecione uma UF para visualizar as datas disponíveis.
+    </fuse-alert>
+    }
+
+</div>

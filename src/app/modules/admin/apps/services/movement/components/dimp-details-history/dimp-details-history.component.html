@@ -1,0 +1,25 @@
+<mat-drawer-container class="h-max flex-auto">
+    <!-- Drawer -->
+    <mat-drawer class="flex w-60 min-w-60 dark:bg-gray-900 md:z-0" [autoFocus]="false" [mode]="drawerMode()"
+        [opened]="drawerOpened()" #matDrawer>
+        <fuse-vertical-navigation [navigation]="menu()" [inner]="true" [mode]="'side'"
+            [name]="'docs-common-components-navigation'" [opened]="true"></fuse-vertical-navigation>
+    </mat-drawer>
+
+    <!-- Drawer content -->
+    <mat-drawer-content class="flex flex-col pb-10" fuseScrollReset>
+        <!-- Main -->
+        <fuse-masonry class="w-full" [items]="cardConfig" [columns]="columnsDetail()" [columnsTemplate]="columnsTemplate">
+        </fuse-masonry>
+
+        <ng-template #columnsTemplate let-columns>
+            <ng-container *ngFor="let column of columns">
+                <div class="flex-1 rounded space-y-8 md:mx-5">
+                    <ng-container *ngFor="let item of column.items">
+                        <app-card-detail [dataSource]="data()" [config]="item"></app-card-detail>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-template>
+    </mat-drawer-content>
+</mat-drawer-container>

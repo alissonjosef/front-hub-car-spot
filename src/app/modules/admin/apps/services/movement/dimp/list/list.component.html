@@ -1,0 +1,274 @@
+<ecomm-header title="Movimentos (DIMP)" [breadcrumbs]="breadcrumbs" actionButtonIcon="download"
+    [disabledActionButton]="true || !searchControl().hasResults" actionButtonLabel="Download" showButtonToggle
+    (onToggleButton)="toggleDrawerReg()">
+    <div class="flex min-w-0 flex-auto flex-col">
+        <div class="w-full flex-auto p-6 sm:p-10 flex flex-col gap-10 lg:flex-row">
+            <div class="flex flex-col w-full gap-5">
+                <form class="flex flex-col w-full gap-4 lg:flex-row lg:gap-5 lg:items-center" [formGroup]="formFilter">
+                    <div class="grid grid-cols-2 gap-5 w-full lg:flex lg:w-auto">
+                        <mat-form-field>
+                            <mat-label>Mês</mat-label>
+                            <mat-select formControlName="month">
+                                @for (month of monthsOptions; track month) {
+                                <mat-option [value]="month.value">{{month.label | titlecase}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Ano</mat-label>
+                            <mat-select formControlName="year">
+                                @for (year of yearsOptions; track year) {
+                                <mat-option [value]="year">{{year}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <button mat-flat-button color="primary" (click)="find(1)">
+                        Buscar
+                    </button>
+
+                </form>
+
+                <div class="w-full flex flex-row justify-end text-xl">
+                    <div class="w-full flex justify-end gap-4">
+                        <div class="rounded-full bg-gray-200 p-1 px-4 text-sm font-semibold cursor-pointer hover:bg-gray-100"
+                            [matMenuTriggerFor]="menuStatus">
+                            Status: {{ statusFilter().buttonLabel }}
+                        </div>
+                        <mat-menu #menuStatus="matMenu">
+                            @for(item of statusOptions; track $index) {
+                            <button mat-menu-item (click)="chooseStatus(item)">
+                                <mat-icon>{{ item.icon }}</mat-icon>
+                                <span>{{ item.buttonLabel }}</span>
+                            </button>
+                            }
+                        </mat-menu>
+                    </div>
+                </div>
+
+                @if(searchControl().afterSearch){
+                @if(searchControl().hasResults) {
+                <div class="bg-card flex flex-col justify-center items-start w-min-4/5 w-full p-6 rounded-2xl">
+                    <div class="w-full flex flex-col gap-4 lg:flex-row mb-7 text-xl">
+                        <div class="w-full flex flex-row">
+                            <strong>{{ selectedMonthYearDisplay }}</strong>
+                        </div>
+
+                        <div class="flex flex-col lg:flex-row justify-end gap-4">
+                            <!-- <button mat-stroked-button class="flex gap-1" [disabled]="!allSelectedAreGenerated || true">
+                                <mat-icon>download</mat-icon>
+                                <span>Baixar arquivos DIMP</span>
+                            </button>
+ -->
+                            <button mat-stroked-button class="flex gap-1" [matMenuTriggerFor]="statusMenu"
+                                [disabled]="getActionOptions().length === 0">
+                                <mat-icon>edit</mat-icon>
+                                <span>Alterar status</span>
+                            </button>
+                            <mat-menu #statusMenu="matMenu">
+                                @for(item of getActionOptions(); track $index) {
+                                <button mat-menu-item (click)="updateStatusList(item)">
+                                    <mat-icon>{{ item.icon }}</mat-icon>
+                                    <span>{{ item.actionLabel }}</span>
+                                </button>
+                                }
+                            </mat-menu>
+                        </div>
+                    </div>
+
+                    <div class="w-full overflow-x-auto">
+                        <table class="min-w-full overflow-y-visible mb-10" mat-table [dataSource]="dataSource" matSort
+                            matSortActive="processingDate" matSortDisableClear matSortDirection="desc">
+
+                            <ng-container matColumnDef="select">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <mat-checkbox (change)="toggleAllSelections($event)" [checked]="isAllSelected()"
+                                        [indeterminate]="isSomeSelected()">
+                                    </mat-checkbox>
+                                </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <mat-checkbox (change)="toggleSelection(row)" [checked]="selection.has(row)">
+                                    </mat-checkbox>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="pending">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">
+                                </th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    <mat-icon class="text-amber-500 icon-size-6"
+                                        *ngIf="row.pendencia">warning_amber</mat-icon>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="uf">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">UF
+                                </th>
+                                <td mat-cell *matCellDef="let row" class="text-center">{{ row.uf }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="qttEstablishment">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Estabelecimentos</th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    {{row.quantidadeEstabelecimentoTotal}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="qttTransactions">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Transações</th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    {{row.quantidadeTransacaoTotal}}
+                                </td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="qttUntimely">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Transações extemporâneas
+                                </th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    {{row.quantidadeExtemporaneoTotal}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="qttCancel">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Cancelamentos</th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    {{row.quantidadeCancelamentoTotal}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="statusMovement">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    @if(row.statusNavigation?.actions?.length === 0) {
+                                    <div class="flex gap-2 w-fit place-self-center rounded-3xl p-2 px-5 text-white opacity-70 justify-center items-center"
+                                        [ngClass]="row.statusNavigation?.classes">
+                                        <mat-icon class="text-white">{{row.statusNavigation?.icon}}</mat-icon>
+                                        <span>{{row.statusNavigation?.buttonLabel}}</span>
+                                    </div>
+                                    } @else {
+                                    <button mat-raised-button class="flex-row items-center gap-2"
+                                        [matMenuTriggerFor]="statusMenu" [ngClass]="row.statusNavigation?.classes">
+                                        <mat-icon>{{ row.statusNavigation?.icon || 'more_horiz'
+                                            }}</mat-icon>
+                                        <span>
+                                            {{ row.statusNavigation?.buttonLabel || 'Selecionar' }}
+                                        </span>
+                                    </button>
+                                    <mat-menu #statusMenu="matMenu">
+                                        @for (item of row.statusNavigation?.actions; track item) {
+                                        @if(getStatusNavigationDTOById(item); as action) {
+                                        <button mat-menu-item (click)="updateStatus(row, action)">
+                                            <mat-icon>{{ action.icon }}</mat-icon>
+                                            <span>{{ action.actionLabel }}</span>
+                                        </button>
+                                        }
+                                        }
+                                        <!--   @if(row.statusId === 3) {
+                                        <button mat-menu-item (click)="downloadMovimentoDimp(row.id)">
+                                            <mat-icon>download</mat-icon>
+                                            <span>Baixar arquivo DIMP</span>
+                                        </button>
+                                        } -->
+                                    </mat-menu>
+                                    }
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="rectifier">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Retificadora</th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    @if(row.retificadora) {
+
+                                    <mat-icon class="text-green-600 mt-2">check_circle
+                                    </mat-icon>
+                                    } @else {
+                                    <mat-icon class="text-red-600 mt-2">
+                                        block
+                                    </mat-icon>
+                                    }
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="dimpFile">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Arquivo DIMP</th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    <button mat-icon-button [disabled]="!row.arquivoDimpId || row.statusId !== 3"
+                                        [queryParams]="{m: this.formFilter.value.month, y: this.formFilter.value.year}"
+                                        (click)="downloadMovimentoDimp(row)" matTooltip="Download arquivo DIMP">
+                                        <mat-icon color="primary">download</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="details">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">
+                                    Detalhes
+                                </th>
+                                <td mat-cell *matCellDef="let row" class="text-center relative">
+                                    <button mat-icon-button class="relative"
+                                        [ngClass]="row.pendencia ? 'bg-red-500 border-white border-solid border-2 ':'bg-primary'"
+                                        [routerLink]="['/apps/services/movement/dimp/details', row.id]"
+                                        [queryParams]="{ m: this.formFilter.value.month, y: this.formFilter.value.year }"
+                                        mat-icon-button matTooltip="Detalhes">
+                                        <mat-icon class="text-white">visibility</mat-icon>
+
+                                        @if(row.pendencia) {
+
+
+                                        <span
+                                            class="absolute inset-0 rounded-full transform scale-110 pointer-events-none shadow-[0_0_0_2px_#ff0000] animate-ping"></span>
+
+                                        <span
+                                            class="absolute top-0 right-0 transform translate-x-1/2 translate-y-1/4
+                                            bg-amber-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                            !
+                                        </span>
+                                        }
+                                    </button>
+
+
+
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="movementMonth">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Movimentos do mês</th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    <button [routerLink]="['/apps/services/movement/dimp/monthly', row.id]"
+                                        [queryParams]="{m: this.formFilter.value.month, y: this.formFilter.value.year}"
+                                        mat-icon-button matTooltip="Movimentos do mês">
+                                        <mat-icon color="primary">date_range</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fileList">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Lista de
+                                    Arquivos</th>
+                                <td mat-cell *matCellDef="let row" class="text-center">
+                                    <button mat-icon-button (click)="filesToggle(row)" matTooltip="Lista de Arquivos">
+                                        <mat-icon color="primary">file_present</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                            <tr [ngClass]="row.pendencia ? '':''" mat-row *matRowDef="let row; columns: columns"></tr>
+                        </table>
+                    </div>
+                </div>
+                } @else {
+                <fuse-alert type="primary" class="shadow-sm w-full" appearance="border">
+                    <mat-icon class="icon-size-5" fuseAlertIcon [svgIcon]="'mat_outline:search_off'">
+                    </mat-icon>
+                    {{searchControl().message}}
+                </fuse-alert>
+                }
+                }
+            </div>
+        </div>
+    </div>
+</ecomm-header>

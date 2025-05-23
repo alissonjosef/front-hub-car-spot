@@ -1,0 +1,67 @@
+<div class="bg-card flex w-full flex-col overflow-auto">
+  <div class="flex h-20 min-h-20 flex-row items-center bg-primary px-6 text-white fixed w-full">
+    <mat-icon class="text-current icon-size-7" svgIcon="mat_outline:notification_add"></mat-icon>
+    <div class="ml-3 text-2xl font-semibold tracking-tight">
+      Nova solicitação DIMP Notificação
+    </div>
+    <button class="ml-auto" mat-icon-button (click)="closeDrawer()">
+      <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+    </button>
+  </div>
+
+  <div class="bg-card flex w-full flex-col overflow-auto">
+    <div class="min-w-full p-5 mt-20">
+      <form class="flex flex-col gap-10" [formGroup]="formRequest">
+        <div class="grid grid-cols-1 w-full gap-7">
+          <div class="col-span-1">
+            <mat-form-field class="w-full">
+              <mat-label>Período</mat-label>
+              <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate formControlName="start" placeholder="Data inicial"
+                  (keydown)="$event.preventDefault()">
+                <input matEndDate formControlName="end" placeholder="Data final" (keydown)="$event.preventDefault()">
+              </mat-date-range-input>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+              <mat-error *ngIf="formRequest.controls.start.hasError('required') && formRequest.controls.start.touched">A
+                data inicial é obrigatória</mat-error>
+              <mat-error *ngIf="formRequest.controls.end.hasError('required') && formRequest.controls.end.touched">A
+                data
+                final é obrigatória</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 w-full gap-7">
+            <mat-form-field class="col-span-1">
+              <mat-label>Processo Adm/Procedimento fiscal</mat-label>
+              <input matInput formControlName="taxProcedure" class="w-full" placeholder="Processo/Procedimento" />
+              <mat-error
+                *ngIf="formRequest.controls.taxProcedure.hasError('required') && formRequest.controls.taxProcedure.touched">O
+                processo administrativo é obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-span-1">
+              <mat-label>CNPJ</mat-label>
+              <input matInput formControlName="cnpj" class="w-full" mask="000.000.000-00||00.000.000/0000-00"
+                placeholder="CNPJ" />
+              <mat-error *ngIf="formRequest.controls.cnpj.hasError('required') && formRequest.controls.cnpj.touched">O
+                CNPJ é obrigatório</mat-error>
+              <mat-error
+                *ngIf="formRequest.controls.cnpj.hasError('pattern') && formRequest.controls.cnpj.touched">Formato de
+                CNPJ
+                inválido</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-span-6 flex justify-end">
+          <button mat-flat-button class="justify-end" color="primary" (click)="sendRequest()"
+            [disabled]="formRequest.invalid">
+            Solicitar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

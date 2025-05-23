@@ -1,0 +1,84 @@
+<div
+    class="relative flex h-full w-full flex-col-reverse items-center justify-end gap-10 overflow-hidden bg-light pt-10 md:justify-center md:gap-30 lg:flex-row lg:justify-around"
+>
+    <form
+        class="login-box flex-colgap-20 mx-5 rounded-2xl bg-white p-6 shadow-xl dark:bg-accent-900"
+        [formGroup]="signInForm"
+        #signInNgForm="ngForm"
+    >
+        <h1 class="text-xl font-bold leading-tight tracking-tight">Login</h1>
+
+        <mat-form-field class="mt-10 w-full">
+            <mat-label>Usuário</mat-label>
+            <input id="username" matInput [formControlName]="'username'" />
+            @if (signInForm.get('username').hasError('required')) {
+                <mat-error> Usuário é obrigatório </mat-error>
+            }
+        </mat-form-field>
+
+        <mat-accordion *ngIf="usuarioEncontrado" class="w-full" #accordion>
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header> </mat-expansion-panel-header>
+
+                <mat-form-field class="w-full">
+                    <mat-label>Instituição</mat-label>
+                    <mat-select formControlName="usuarioInstituicao" [disabled]="!instituicoesList || instituicoesList.length === 0">
+                        @for (instituicaoOption of instituicoesList; track instituicaoOption) {
+                            <mat-option [value]="instituicaoOption">
+                                {{ instituicaoOption.instituicao?.nome }}
+                            </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                    <mat-label>Senha</mat-label>
+                    <input id="password" matInput type="password" [formControlName]="'password'" #passwordField />
+                    <button
+                        mat-icon-button
+                        type="button"
+                        (click)="passwordField.type === 'password' ? (passwordField.type = 'text') : (passwordField.type = 'password')"
+                        matSuffix
+                    >
+                        @if (passwordField.type === 'password') {
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                        }
+                        @if (passwordField.type === 'text') {
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:eye-slash'"></mat-icon>
+                        }
+                    </button>
+                    <mat-error>Senha é obrigatória</mat-error>
+                </mat-form-field>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <button
+            class="fuse-mat-button-large mt-6 w-full bg-primary text-white"
+            mat-flat-button
+            [disabled]="signInForm.disabled"
+            (click)="usuarioEncontrado ? signIn() : validarLogin()"
+        >
+            @if (!signInForm.disabled) {
+                <span>{{ usuarioEncontrado ? 'Entrar' : 'Buscar' }}</span>
+            }
+            @if (signInForm.disabled) {
+                <mat-progress-spinner [diameter]="24" [mode]="'indeterminate'"></mat-progress-spinner>
+            }
+        </button>
+
+        <!-- Submit button -->
+    </form>
+
+    <img src="images/logo/hub-car-spot.png" alt="Logo E-commpare" class="mt-5 max-w-56 md:max-w-80 lg:max-w-96 xl:max-w-128" />
+
+    <img
+        class="icon-spin reverse absolute -right-60 -top-60 hidden w-128 lg:block xl:w-160"
+        src="images/logo/hub-car-spot-icon.svg"
+        alt="ícone Hub-car"
+    />
+    <img
+        class="icon-spin absolute -bottom-64 right-60 hidden w-128 lg:block xl:w-160"
+        src="images/logo/hub-car-spot-icon.svg"
+        alt="ícone Hub-car"
+    />
+</div>

@@ -1,0 +1,54 @@
+<router-outlet></router-outlet>
+
+@if(env().isDev){
+<div
+    class="fixed uppercase text-white right-0 top-1/2 z-90 flex h-10 w-10 items-center justify-center rounded-l-lg bg-blue-600 bg-opacity-90 shadow-lg print:hidden">
+    <span class="sm:hidden">xs</span>
+    <span class="hidden sm:inline md:hidden">sm</span>
+    <span class="hidden md:inline lg:hidden">md</span>
+    <span class="hidden lg:inline xl:hidden">lg</span>
+    <span class="hidden xl:inline">xl</span>
+</div>
+}
+
+@if(!env().production) {
+<div matTooltip="Configurações de ambiente" (click)="toggleDrawer()"
+    class="fixed uppercase cursor-pointer text-white right-0 bottom-30 z-90 flex h-10 w-10 items-center justify-center rounded-l-lg bg-red-600 bg-opacity-90 shadow-lg print:hidden">
+    <mat-icon class="text-white">build_circle</mat-icon>
+</div>
+
+<fuse-drawer #envDrawer [opened]="drawerOpened()" class="w-screen min-w-screen sm:w-1/3 sm:min-w-1/3" fixed
+    [mode]="'over'" [name]="'envDrawer'" [position]="'right'">
+
+    <div class="bg-card flex w-full flex-col overflow-auto">
+        <div class="flex h-20 min-h-20 flex-row items-center bg-primary px-6 text-white fixed w-full">
+            <mat-icon class="text-current icon-size-7">build_circle</mat-icon>
+            <div class="ml-3 text-2xl font-semibold tracking-tight">
+                Environments ({{env().name}})
+            </div>
+            <button class="ml-auto" mat-icon-button (click)="toggleDrawer()">
+                <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+            </button>
+        </div>
+        <div class="min-w-full p-5 mt-20">
+            <div class="flex flex-col divide-y border-b font-medium" *ngFor="let props of envComp()">
+                <div class="flex items-center justify-between py-3">
+                    <div class="text-secondary">{{props.key}}</div>
+
+                    @switch (props.type) {
+                    @case ('boolean') {
+                    <mat-icon>{{props.value ? 'check_circle':'block'}}</mat-icon>
+                    }
+                    @case ('object') {
+                    <pre class="text-xs">{{props.value | json}}</pre>
+                    }
+                    @default {
+                    <span>{{props.value}}</span>
+                    }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</fuse-drawer>
+}

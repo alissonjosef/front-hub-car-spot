@@ -1,0 +1,73 @@
+<div class="flex min-w-0 flex-auto flex-col">
+    <div
+        class="bg-card flex flex-0 flex-row border-b p-6 py-4 dark:bg-transparent items-center justify-between md:px-10 md:py-8 gap-4">
+        @if(showGoBackButton()) {
+        <button mat-icon-button (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        }
+        <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center text-sm sm:text-sm md:text-md md:font-medium gap-2">
+                @for (item of breadcrumbs(); track $index) {
+                @if(item.first) {
+                <div>
+                    <a class="whitespace-nowrap text-primary-500">{{item.label}}</a>
+                </div>
+                } @else {
+
+                <div class="flex gap-2 items-center whitespace-nowrap" [ngClass]="item.current? 'hidden sm:flex' :''">
+                    <mat-icon class="text-secondary icon-size-5" [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
+
+                    @if(item.link) {
+                    <a class="text-secondary-500 hover:text-secondary-400 hover:cursor-pointer hover:underline"
+                        [routerLink]="item.link" [ngClass]="">{{item.label}}</a>
+                    } @else if (item.onClick) {
+                    <a class="text-secondary-500 hover:text-secondary-400 hover:cursor-pointer hover:underline"
+                        (click)="item.onClick()" [ngClass]="">{{item.label}}</a>
+                    } @else {
+                    <span class="text-primary-500">{{item.label}}</span>
+                    }
+                </div>
+                }
+                }
+            </div>
+
+            <div>
+                <h2
+                    class="truncate text-xl font-extrabold leading-7 tracking-tight md:leading-10 md:text-3xl xl:text-4xl hidden md:flex md:flex-col">
+                    {{title()}}
+                </h2>
+                @if(description()) {
+                <span class="text-secondary text-sm md:text-md">{{description()}}</span>
+                }
+            </div>
+        </div>
+        @if(showButtonToggle()) {
+        <div class="order-last flex justify-between">
+            <button mat-icon-button (click)="toggleButton()">
+                <mat-icon>{{iconToggle()}}</mat-icon>
+            </button>
+        </div>
+        }
+
+        @if(showActionButton()) {
+        <div class="hidden sm:inline-flex">
+            <div class="order-last flex justify-between w-full md:w-auto">
+                <button mat-flat-button color="primary" class="gap-1 justify-center items-center w-full md:w-auto"
+                    (click)="actionButtonHandler()" [routerLink]="actionRouterLink()" [disabled]="disabledActionButton()">
+                    @if(actionButtonIcon()){
+                    <mat-icon [svgIcon]="actionButtonIcon()"></mat-icon>
+                    }
+                    {{ actionButtonLabel() }}
+                </button>
+            </div>
+        </div>
+        <button class="sm:hidden border-primary border-2 border-solid" mat-icon-button (click)="actionButtonHandler()"
+            [routerLink]="actionRouterLink()" [matTooltip]="actionButtonLabel()">
+            <mat-icon class="icon-size-5" color="primary" [svgIcon]="actionButtonIcon()"></mat-icon>
+        </button>
+        }
+
+    </div>
+    <ng-content></ng-content>
+</div>

@@ -1,0 +1,50 @@
+<ecomm-header title="{{ isNew ? 'Criar novo' : 'Edição do' }} Usuário" [breadcrumbs]="breadcrumbs" showGoBackButton
+(onGoBack)="goBack()"
+>
+<div class="flex min-w-0 flex-auto flex-col">
+
+    <div class="w-full flex-auto p-6 sm:p-10 flex flex-col gap-10">
+        <form class="bg-card overflow-hidden rounded p-4 shadow mx-0 md:mx-50" [formGroup]="editForm">
+            <div class="grid grid-cols-12 gap-4 mt-5 p-5">
+                <span class="col-span-12 font-bold">Dados do Usuario</span>
+
+                <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                    <mat-label>Login</mat-label>
+                    <input matInput formControlName="login"/>
+                </mat-form-field>
+
+                <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                    <mat-label>E-mail</mat-label>
+                    <input matInput formControlName="email" type="email" />
+                </mat-form-field>
+
+                <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                    <mat-label>Nome</mat-label>
+                    <input matInput formControlName="firstName" />
+                </mat-form-field>
+
+                <mat-form-field class="col-span-12 sm:col-span-6 w-full">
+                    <mat-label>Sobrenome</mat-label>
+                    <input matInput formControlName="lastName" />
+                </mat-form-field>
+
+                <div class="col-span-12 sm:col-span-6 w-full">
+                    <span class="font-bold">Perfis</span>
+                    <div class="flex sm:flex-row flex-col">
+                        <mat-checkbox
+                            *ngFor="let profile of profiles"
+                            [formControl]="editForm.controls.profiles.controls[profile.value]">
+                            {{ profile.name }}
+                        </mat-checkbox>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end mt-4">
+                <button mat-raised-button color="primary px-8 gap-2" >
+                    <mat-icon svgIcon="mat_outline:save"></mat-icon>
+                    Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+</ecomm-header>

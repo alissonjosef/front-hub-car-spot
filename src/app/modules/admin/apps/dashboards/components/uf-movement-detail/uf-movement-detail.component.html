@@ -1,0 +1,64 @@
+<table class="min-w-full overflow-y-visible p-2" mat-table [dataSource]="dataSource">
+
+    <!-- Categoria -->
+    <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row" class="font-bold">
+            {{ row.categoria }}
+        </td>
+    </ng-container>
+
+    <!-- Estabelecimento -->
+    <ng-container matColumnDef="establishment">
+        <th mat-header-cell *matHeaderCellDef class="text-right">
+            Estabelecimentos
+        </th>
+        <td mat-cell *matCellDef="let row" class="text-right">
+            {{ row.estabelecimento }}
+        </td>
+    </ng-container>
+
+    <!-- Transações -->
+    <ng-container matColumnDef="transactions">
+        <th mat-header-cell *matHeaderCellDef class="text-right">
+            Transações
+        </th>
+        <td mat-cell *matCellDef="let row" class="text-right">
+            {{ row.transacoes }}
+        </td>
+    </ng-container>
+
+    <!-- Cancelamento -->
+    <ng-container matColumnDef="cancel">
+        <th mat-header-cell *matHeaderCellDef class="text-right">
+            Cancelamento
+        </th>
+        <td mat-cell *matCellDef="let row" class="text-right">
+            {{ row.cancelamento }}
+        </td>
+    </ng-container>
+
+    <!-- Conta Conjunta -->
+    <ng-container matColumnDef="joint_account">
+        <th mat-header-cell *matHeaderCellDef class="text-right">
+            Conta Conjunta
+        </th>
+        <td mat-cell *matCellDef="let row" class="text-right">
+            {{ row.contaConjunta }}
+        </td>
+    </ng-container>
+
+    <!-- Marketplace -->
+    <ng-container matColumnDef="marketplace">
+        <th mat-header-cell *matHeaderCellDef class="text-right">
+            Marketplace
+        </th>
+        <td mat-cell *matCellDef="let row" class="text-right">
+            {{ row.marketplace }}
+        </td>
+    </ng-container>
+
+    <!-- Header e Rows -->
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns"></tr>
+</table>
