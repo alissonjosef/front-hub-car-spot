@@ -2,39 +2,112 @@
 import { FuseNavigationItem } from '@fuse/components/navigation';
 
 const navigation: FuseNavigationItem[] = [
-    {
+    /* {
         id: 'dashboard',
-        title: 'Painel de controle',
+        title: 'Administrativo',
         type: 'basic',
         icon: 'mat_outline:dashboard',
         link: '/apps/dashboards',
-    },
+    }, */
     {
-        id: 'registrations',
-        title: 'Cadastros',
+        id: 'administrative',
+        title: 'Administrativo',
         type: 'group',
-        icon: 'edit_note',
+        icon: 'supervisor_account',
         children: [
             {
-                id: 'representatives',
-                title: 'Representantes',
+                id: 'buyVehicle',
+                title: 'Compra Veiculo',
                 type: 'basic',
-                link: '/apps/registrations/representatives/list',
-                icon: 'mat_outline:person_pin',
+                link: '/apps/compra-veiculo',
+                icon: 'car_rental',
             },
             {
-                id: 'payment-institution',
-                title: 'Instituição de pagamento',
+                id: 'sellVehicle',
+                title: 'Venda Veiculo',
+                type: 'basic',
+                link: '/apps/venda-veiculo',
+                icon: 'monetization_on',
+            },
+            {
+                id: 'exchangeVehicle',
+                title: 'Troca Veiculo',
+                type: 'basic',
+                link: '/apps/troca-veiculo',
+                icon: 'swap_horiz',
+            },
+            {
+                id: 'vehicle',
+                title: 'Veiculo',
+                type: 'basic',
+                link: '/apps/veiculo',
+                icon: 'directions_car',
+            },
+            // instituição
+            // usuários
+        ],
+    },
+    {
+        id: 'settings',
+        title: 'Configurações',
+        type: 'group',
+        icon: 'settings',
+        children: [
+            {
+                id: 'userManagement',
+                title: 'Gerenciamento de usuário',
+                type: 'basic',
+                link: '/apps/registrations/representatives/list',
+                icon: 'mat_outline:supervisor_account',
+            },
+            {
+                id: 'suppliers',
+                title: 'Fornecedores',
                 type: 'basic',
                 link: '/apps/registrations/institution/list',
-                icon: 'mat_outline:account_balance',
+                icon: 'mat_outline:local_shipping',
             },
-             {
-                id: 'user-management',
-                title: 'Usuários',
+            {
+                id: 'financialInstitution',
+                title: 'Financeira',
                 type: 'basic',
                 link: '/apps/registrations/user-management/list',
-                icon: 'heroicons_outline:user',
+                icon: 'mat_outline:account_balance',
+            },
+            {
+                id: 'fees',
+                title: 'Taxas',
+                type: 'basic',
+                link: '/apps/registrations/user-management/list',
+                icon: 'mat_outline:request_quote',
+            },
+            {
+                id: 'brands',
+                title: 'Marcas',
+                type: 'basic',
+                link: '/apps/registrations/user-management/list',
+                icon: 'mat_outline:label',
+            },
+            {
+                id: 'documentStatus',
+                title: 'Status Documento',
+                type: 'basic',
+                link: '/apps/registrations/user-management/list',
+                icon: 'mat_outline:description',
+            },
+            {
+                id: 'locations',
+                title: 'Locais',
+                type: 'basic',
+                link: '/apps/registrations/user-management/list',
+                icon: 'mat_outline:place',
+            },
+            {
+                id: 'branches',
+                title: 'Filiais',
+                type: 'basic',
+                link: '/apps/registrations/user-management/list',
+                icon: 'mat_outline:business',
             },
             // instituição
             // usuários
@@ -42,9 +115,109 @@ const navigation: FuseNavigationItem[] = [
     },
     {
         id: 'search',
-        title: 'Consulta',
+        title: 'Entidades',
         type: 'group',
-        icon: 'search',
+        icon: 'view_list',
+        children: [
+
+            {
+                id: 'UserInstitution',
+                title: 'Usuario Instituicao',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'mat_outline:group',
+            },
+            {
+                id: 'Supplier',
+                title: 'Fornecedor',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'mat_outline:local_shipping',
+            },
+            {
+                id: 'FinanceCompany',
+                title: 'Financeira',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'mat_outline:account_balance',
+            },
+            {
+                id: 'Rates',
+                title: 'Taxas',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'show_chart',
+            },
+            {
+                id: 'Fuel',
+                title: 'Combustivel',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'mat_outline:local_gas_station',
+            },
+            {
+                id: 'Brand',
+                title: 'Marca',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'mat_outline:label',
+            },
+            {
+                id: 'DocumentStatus',
+                title: 'Status Documento',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'mat_outline:description',
+            },
+            {
+                id: 'Location',
+                title: 'Local',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'mat_outline:place',
+            },
+            {
+                id: 'Branch',
+                title: 'Filial',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'mat_outline:business',
+            },
+            {
+                id: 'BuyVehicle',
+                title: 'Compra Veiculo',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'mat_outline:shopping_cart',
+            },
+            {
+                id: 'SellVehicle',
+                title: 'Venda Veiculo',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'mat_outline:attach_money',
+            },
+            {
+                id: 'ExchangeVehicle',
+                title: 'Troca Veiculo',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'mat_outline:swap_horiz',
+            },
+            {
+                id: 'Vehicle',
+                title: 'Veiculo',
+                type: 'basic',
+                link: '/apps/services/files',
+                icon: 'mat_outline:directions_car',
+            },
+        ],
+    },
+   /*  {
+        id: 'services',
+        title: 'Administração',
+        type: 'group',
+        icon: 'business',
         children: [
             {
                 id: 'establishments',
@@ -54,29 +227,7 @@ const navigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:users',
             },
         ],
-    },
-    {
-        id: 'services',
-        title: 'Serviços',
-        type: 'group',
-        icon: 'miscellaneous_services',
-        children: [
-            {
-                id: 'movement',
-                title: 'Movimentos',
-                type: 'basic',
-                link: '/apps/services/movement/dimp',
-                icon: 'mat_outline:auto_awesome_motion',
-            },
-            {
-                id: 'files',
-                title: 'Arquivos',
-                type: 'basic',
-                link: '/apps/services/files',
-                icon: 'mat_outline:cloud_upload',
-            },
-        ],
-    },
+    }, */
 ];
 
 export const defaultNavigation: FuseNavigationItem[] = [...navigation];
