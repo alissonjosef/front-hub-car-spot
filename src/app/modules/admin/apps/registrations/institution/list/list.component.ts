@@ -52,8 +52,8 @@ export class InstitutionListComponent {
     detailPaymentInstitution = signal<any>(null);
 
     breadcrumbs: HeaderBreadcrumb[] = [
-        { label: 'Cadastros', first: true },
-        { label: 'Instituição de Pagamento' }
+        { label: 'Configurações', first: true },
+        { label: 'Gerenciamento de Usuários' }
     ];
 
     dataSource = new MatTableDataSource<any>();

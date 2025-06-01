@@ -162,7 +162,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.title = route.snapshot.title;
 
         if (this.title) {
-            this._titleService.setTitle(`Ecommply - ${this.title}`);
+            this._titleService.setTitle(`HubCarSpot - ${this.title}`);
         }
 
         // 2. Get the query parameter from the current route and

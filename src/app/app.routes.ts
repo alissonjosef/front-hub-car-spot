@@ -90,6 +90,10 @@ export const appRoutes: Route[] = [
                 path: 'search',
                 loadChildren: () => import('app/modules/admin/apps/search/search.routes').then((m) => m.searchRoutes),
             },
+            {
+                path: 'settings',
+                loadChildren: () => import('app/modules/admin/apps/settings/settings.routes').then((m) => m.settingsRoutes),
+            },
         ],
     },
     // 404 & Catch all

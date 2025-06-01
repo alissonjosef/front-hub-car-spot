@@ -57,7 +57,7 @@ const navigation: FuseNavigationItem[] = [
                 id: 'userManagement',
                 title: 'Gerenciamento de usuário',
                 type: 'basic',
-                link: '/apps/registrations/representatives/list',
+                link: '/apps/settings/user-management/list',
                 icon: 'mat_outline:supervisor_account',
             },
             {

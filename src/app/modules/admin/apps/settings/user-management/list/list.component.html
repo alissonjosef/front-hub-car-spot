@@ -1,0 +1,85 @@
+<ecomm-header title="Gerenciamento de Usuários" [breadcrumbs]="breadcrumbs">
+    <div class="flex min-w-0 flex-auto flex-col">
+        <div class="flex w-full flex-auto flex-col gap-10 p-6 sm:p-10">
+            <div
+                class="w-min-4/5 bg-card flex w-full flex-col items-end justify-center rounded-2xl p-6"
+                [class.hidden]="dataSource.data.length === 0"
+            >
+                <div class="w-full overflow-x-auto lg:overflow-x-hidden">
+                    <table class="min-w-full overflow-y-visible" mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="Access">
+                            <th mat-header-cell *matHeaderCellDef>Acesso</th>
+                            <td mat-cell *matCellDef="let row" class="whitespace-nowrap">
+                                {{ row.identificador }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Administrador">
+                            <th mat-header-cell *matHeaderCellDef>Administrador</th>
+                            <td mat-cell *matCellDef="let row">
+                                <mat-icon color="{{ row.isMaster ? 'primary' : 'warn' }}">
+                                    {{ row.isMaster ? 'check' : 'close' }}
+                                </mat-icon>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Profile">
+                            <th mat-header-cell *matHeaderCellDef>Perfil</th>
+                            <td mat-cell *matCellDef="let row" class="whitespace-nowrap">
+                                {{ row.role }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Read">
+                            <th mat-header-cell *matHeaderCellDef>Leitura</th>
+                            <td mat-cell *matCellDef="let row">
+                                 <mat-icon color="{{ row.read ? 'primary' : 'warn' }}">
+                                    {{ row.read ? 'check' : 'close' }}
+                                </mat-icon>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Write">
+                            <th mat-header-cell *matHeaderCellDef>Escrita</th>
+                            <td mat-cell *matCellDef="let row">
+                                 <mat-icon color="{{ row.write ? 'primary' : 'warn' }}">
+                                    {{ row.write ? 'check' : 'close' }}
+                                </mat-icon>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Update">
+                            <th mat-header-cell *matHeaderCellDef>Atualização</th>
+                            <td mat-cell *matCellDef="let row">
+                                 <mat-icon color="{{ row.update ? 'primary' : 'warn' }}">
+                                    {{ row.update ? 'check' : 'close' }}
+                                </mat-icon>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="edit">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">Editar</th>
+                            <td mat-cell *matCellDef="let row" class="text-center">
+                                <button mat-icon-button [routerLink]="['/apps/registrations/institution/edit', row.id]">
+                                    <mat-icon [svgIcon]="'mat_solid:edit'"></mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Delete">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">Excluir</th>
+                            <td mat-cell *matCellDef="let row" class="text-center">
+                                <button mat-icon-button (click)="detailToggle(row)">
+                                    <mat-icon class="text-red-500" [svgIcon]="'mat_outline:delete_forever'"></mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</ecomm-header>
