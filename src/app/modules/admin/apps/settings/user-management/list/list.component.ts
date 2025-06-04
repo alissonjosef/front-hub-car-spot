@@ -49,7 +49,7 @@ export type SortState = { predicate?: string; order?: SortOrder };
 export class ListComponent {
   protected _settingsService = inject(SettingsService);
   breadcrumbs: HeaderBreadcrumb[] = [
-    { label: 'Cadastros', first: true },
+    { label: 'Configurações', first: true },
     { label: 'Gerenciamento de Usuários' },
   ];
 

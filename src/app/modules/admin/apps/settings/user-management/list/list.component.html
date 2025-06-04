@@ -15,8 +15,8 @@
                         </ng-container>
 
                         <ng-container matColumnDef="Administrador">
-                            <th mat-header-cell *matHeaderCellDef>Administrador</th>
-                            <td mat-cell *matCellDef="let row">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">Administrador</th>
+                            <td mat-cell *matCellDef="let row" class="text-center">
                                 <mat-icon color="{{ row.isMaster ? 'primary' : 'warn' }}">
                                     {{ row.isMaster ? 'check' : 'close' }}
                                 </mat-icon>
@@ -31,8 +31,8 @@
                         </ng-container>
 
                         <ng-container matColumnDef="Read">
-                            <th mat-header-cell *matHeaderCellDef>Leitura</th>
-                            <td mat-cell *matCellDef="let row">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">Leitura</th>
+                            <td mat-cell *matCellDef="let row" class="text-center">
                                  <mat-icon color="{{ row.read ? 'primary' : 'warn' }}">
                                     {{ row.read ? 'check' : 'close' }}
                                 </mat-icon>
@@ -40,8 +40,8 @@
                         </ng-container>
 
                         <ng-container matColumnDef="Write">
-                            <th mat-header-cell *matHeaderCellDef>Escrita</th>
-                            <td mat-cell *matCellDef="let row">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">Escrita</th>
+                            <td mat-cell *matCellDef="let row" class="text-center">
                                  <mat-icon color="{{ row.write ? 'primary' : 'warn' }}">
                                     {{ row.write ? 'check' : 'close' }}
                                 </mat-icon>
@@ -49,8 +49,8 @@
                         </ng-container>
 
                         <ng-container matColumnDef="Update">
-                            <th mat-header-cell *matHeaderCellDef>Atualização</th>
-                            <td mat-cell *matCellDef="let row">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">Atualização</th>
+                            <td mat-cell *matCellDef="let row" class="text-center">
                                  <mat-icon color="{{ row.update ? 'primary' : 'warn' }}">
                                     {{ row.update ? 'check' : 'close' }}
                                 </mat-icon>
@@ -60,7 +60,7 @@
                         <ng-container matColumnDef="edit">
                             <th mat-header-cell *matHeaderCellDef class="text-center">Editar</th>
                             <td mat-cell *matCellDef="let row" class="text-center">
-                                <button mat-icon-button [routerLink]="['/apps/registrations/institution/edit', row.id]">
+                                <button mat-icon-button disabled [routerLink]="['/apps/registrations/institution/edit', row.id]">
                                     <mat-icon [svgIcon]="'mat_solid:edit'"></mat-icon>
                                 </button>
                             </td>
@@ -69,7 +69,7 @@
                         <ng-container matColumnDef="Delete">
                             <th mat-header-cell *matHeaderCellDef class="text-center">Excluir</th>
                             <td mat-cell *matCellDef="let row" class="text-center">
-                                <button mat-icon-button (click)="detailToggle(row)">
+                                <button mat-icon-button disabled (click)="detailToggle(row)">
                                     <mat-icon class="text-red-500" [svgIcon]="'mat_outline:delete_forever'"></mat-icon>
                                 </button>
                             </td>
