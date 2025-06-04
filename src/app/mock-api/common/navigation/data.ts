@@ -16,31 +16,31 @@ const navigation: FuseNavigationItem[] = [
         icon: 'supervisor_account',
         children: [
             {
-                id: 'buyVehicle',
+                id: 'buy-Vehicle',
                 title: 'Compra Veiculo',
                 type: 'basic',
-                link: '/apps/compra-veiculo',
+                link: '/apps/administrative/buy-vehicle/list',
                 icon: 'car_rental',
             },
             {
-                id: 'sellVehicle',
+                id: 'sell-Vehicle',
                 title: 'Venda Veiculo',
                 type: 'basic',
-                link: '/apps/venda-veiculo',
+                link: '/apps/administrative/sell-vehicle/list',
                 icon: 'monetization_on',
             },
             {
-                id: 'exchangeVehicle',
+                id: 'exchange-Vehicle',
                 title: 'Troca Veiculo',
                 type: 'basic',
-                link: '/apps/troca-veiculo',
+                link: '/apps/administrative/exchange-vehicle/list',
                 icon: 'swap_horiz',
             },
             {
                 id: 'vehicle',
                 title: 'Veiculo',
                 type: 'basic',
-                link: '/apps/veiculo',
+                link: '/apps/administrative/vehicle/list',
                 icon: 'directions_car',
             },
             // instituição
@@ -114,7 +114,7 @@ const navigation: FuseNavigationItem[] = [
         ],
     },
     {
-        id: 'search',
+        id: 'entity',
         title: 'Entidades',
         type: 'group',
         icon: 'view_list',

@@ -94,6 +94,10 @@ export const appRoutes: Route[] = [
                 path: 'settings',
                 loadChildren: () => import('app/modules/admin/apps/settings/settings.routes').then((m) => m.settingsRoutes),
             },
+            {
+                path: 'administrative',
+                loadChildren: () => import('app/modules/admin/apps/administrative/administrative.routes').then((m) => m.AdministrativeRoutes),
+            },
         ],
     },
     // 404 & Catch all
