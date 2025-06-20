@@ -79,18 +79,6 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/apps/services/services.routes').then((m) => m.serviceRoutes),
             },
             {
-                path: 'dashboards',
-                loadChildren: () => import('app/modules/admin/apps/dashboards/dashboards.routes').then((m) => m.dashboardsRoutes),
-            },
-            {
-                path: 'registrations',
-                loadChildren: () => import('app/modules/admin/apps/registrations/registrations.routes').then((m) => m.registrationsRoutes),
-            },
-            {
-                path: 'search',
-                loadChildren: () => import('app/modules/admin/apps/search/search.routes').then((m) => m.searchRoutes),
-            },
-            {
                 path: 'settings',
                 loadChildren: () => import('app/modules/admin/apps/settings/settings.routes').then((m) => m.settingsRoutes),
             },

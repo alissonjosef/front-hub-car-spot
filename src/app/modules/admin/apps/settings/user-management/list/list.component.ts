@@ -17,6 +17,7 @@ import { CnpjCpfPipe } from '@shared/pipes/cnpj-cpf.pipe';
 import { NgxMaskDirective } from 'ngx-mask';
 import { firstValueFrom, Observable } from 'rxjs';
 import { EntityArrayResponseType, SettingsService } from '../../services/settings.service';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 export type SortOrder = 'asc' | 'desc';
 
@@ -48,6 +49,7 @@ export type SortState = { predicate?: string; order?: SortOrder };
 })
 export class ListComponent {
   protected _settingsService = inject(SettingsService);
+  private _fuseConfirm = inject(FuseConfirmationService);
   breadcrumbs: HeaderBreadcrumb[] = [
     { label: 'Configurações', first: true },
     { label: 'Gerenciamento de Usuários' },
@@ -86,7 +88,6 @@ export class ListComponent {
   }
 
   protected sortState(): any {
-    // Implemente ou adapte de acordo com seu componente
     return {};
   }
 
@@ -97,4 +98,44 @@ export class ListComponent {
     }
     return sortParam;
   }
+
+
+
+modalDeleteUser(user: any) {
+    const dialogRef = this._fuseConfirm.open({
+        title: 'Excluir usuário?',
+        message: `Tem certeza que deseja excluir o usuário
+            <strong class="text-black">${user.identificador}</strong>?
+            <br /> <br />Essa ação não poderá ser desfeita!`,
+        icon: {
+            show: true,
+            color: 'warning',
+            name: 'warning',
+        },
+        actions: {
+            confirm: {
+                label: 'Excluir',
+                color: 'warn',
+            },
+            cancel: {
+                show: true,
+                label: 'Cancelar',
+            },
+        },
+    });
+
+    dialogRef.afterClosed().subscribe((result: 'confirmed' | 'canceled') => {
+        if (result === 'confirmed') {
+            firstValueFrom(this._settingsService.delete(user.id))
+                .then(() => {
+                    this.load();
+                })
+                .catch(error => {
+                    console.error('Erro ao excluir usuário:', error);
+                })
+        }
+    });
+}
+
+
 }
